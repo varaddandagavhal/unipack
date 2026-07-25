@@ -53,3 +53,45 @@ sudo ./unipack remove vscode
 sudo ./unipack update
 Prerequisites on Ubuntu: sudo apt install cmake g++ libcurl4-openssl-dev
 Which approach works best for your setup? Do you have a GitHub account, or would you prefer SCP/USB?
+
+
+
+ere are the exact steps once you've cloned on Ubuntu:
+# 1. Install build dependencies
+sudo apt install cmake g++ libcurl4-openssl-dev make
+
+# 2. Enter the cloned directory
+cd unipack
+
+# 3. Build with Makefile (simpler, uses curl CLI for HTTP)
+make
+
+# 4. Test the binary
+./unipack --version
+./unipack --help
+
+# 5. Try a search (this makes live API calls to Snapcraft/Flathub)
+./unipack search vscode
+
+# 6. Install (needs sudo because apt/snap require root)
+sudo ./unipack install vscode
+
+# 7. Install with a preferred format
+sudo ./unipack install vscode --prefer apt
+
+# 8. Check the state file that tracks what was installed
+cat ~/.config/unipack/installed.json
+
+# 9. Remove
+sudo ./unipack remove vscode
+
+# 10. Update tracked packages
+sudo ./unipack update
+Alternative — CMake build (more robust, uses the cpr HTTP library):
+cmake -B build
+cmake --build build
+sudo cp build/unipack /usr/local/bin/   # install system-wide
+Quick verification that apt/snap/flatpak are available on your system:
+which apt-cache    # should exist on Ubuntu
+which snap         # may need: sudo apt install snapd
+which flatpak      # may need: sudo apt install flatpak
